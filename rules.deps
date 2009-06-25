@@ -1,0 +1,8 @@
+%.d : %.cc
+	$(CXX) -MM -MF $@ -MT '$*.o $*.d' $(CPPFLAGS) $*.cc
+
+LOCAL_DEP ?= $(subst .o,.d,$(LOCAL_OBJ))
+ifneq ($(MAKECMDGOALS),clean)
+-include $(LOCAL_DEP)
+endif
+
