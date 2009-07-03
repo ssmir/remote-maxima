@@ -5,4 +5,22 @@ rules.local$
 .d$
 .dylib$
 .so$
+test/.*Test\.cc
+
+bin/node
+examples/client
+examples/maxima_path.conf
+examples/mclient
+examples/miclient
+examples/paths.sh
+include/IARnet/InfoService.h
+include/IARnet/Security.h
+lib/libMaximaAPI.a
+src/FileServer.cc
+src/FileServer.h
+src/InfoService.cc
+src/Maxima.cc
+src/Maxima.h
+src/Security.cc
+test/alltests
 
