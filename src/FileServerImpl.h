@@ -18,7 +18,7 @@
 #ifndef __FILESERVERIMPL_H__
 #define __FILESERVERIMPL_H__
 
-#include "Maxima.h"
+#include "FileServer.h"
 
 #include <boost/filesystem.hpp>
 
