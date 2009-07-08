@@ -1,26 +1,28 @@
-syntax: regexp
+syntax: glob
 .DS_Store
-rules.local$
-.o$
-.d$
-.dylib$
-.so$
-test/.*Test\.cc
+*.o
+*.d
+*.dylib
+*.so
+*.a
 
+rules.local
 bin/node
 examples/client
 examples/maxima_path.conf
 examples/mclient
 examples/miclient
 examples/paths.sh
-include/IARnet/InfoService.h
-include/IARnet/Security.h
-lib/libMaximaAPI.a
+
+test/alltests
+test/*Test.cc
+
 src/FileServer.cc
 src/FileServer.h
 src/InfoService.cc
+include/IARnet/InfoService.h
 src/Maxima.cc
 src/Maxima.h
 src/Security.cc
-test/alltests
+include/IARnet/Security.h
 
