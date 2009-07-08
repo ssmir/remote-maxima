@@ -88,6 +88,23 @@ IARnet::Files::SeqOfFS MaximaFactoryI::dispatch(const std::string &fileName,
     return _fs.dispatch(fileName, servers);
 }
 
+void MaximaFactoryI::write(const std::string &fileName, int offset,
+    const Files::FileContent &chunk, const Ice::Current &)
+{
+    _fs.write(fileName, offset, chunk);
+}
+
+void MaximaFactoryI::close(const std::string &fileName, const Ice::Current &)
+{
+    _fs.close(fileName);
+}
+
+IARnet::Files::FileContent MaximaFactoryI::read(const std::string &fileName, int offset,
+    int chunkSize, const Ice::Current &)
+{
+    return _fs.read(fileName, offset, chunkSize);
+}
+
 extern "C" ICE_DECLSPEC_EXPORT
 Ice::Object *createMaximaFactory(const IARnet::Node::ServiceContext &context)
 {

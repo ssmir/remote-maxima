@@ -20,6 +20,7 @@
 
 #include "FileServer.h"
 
+#include <IceUtil/Mutex.h>
 #include <boost/filesystem.hpp>
 
 namespace fs = ::boost::filesystem;
@@ -29,7 +30,7 @@ namespace IARnet
 namespace Files
 {
 
-class FileServerImpl
+class FileServerImpl : public IceUtil::Mutex
 {
 public:
     FileServerImpl(const fs::path &directory, bool removeOnDestroy = true);
@@ -44,10 +45,17 @@ public:
     static FileContent loadFile(const fs::path &path);
     
     static void saveFile(const fs::path &path, const FileContent &content);
+
+    void write(const std::string &fileName, int offset, const FileContent &chunk);
     
+    void close(const std::string &fileName);
+        
+    FileContent read(const std::string &fileName, int offset, int chunkSize);
+
 private:
     fs::path _directory;
 	bool _removeOnDestroy;
+	std::map<std::string, FILE *> _openedFiles;
 };
 
 }

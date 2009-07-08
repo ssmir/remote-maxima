@@ -67,6 +67,14 @@ class ICE_DECLSPEC_EXPORT MaximaResourceI : public MaximaResource,
         virtual Files::SeqOfFS dispatch(const std::string &fileName,
             const Files::SeqOfFS &servers, const Ice::Current &);
         
+        virtual void write(const std::string &fileName, int offset,
+            const Files::FileContent &chunk, const Ice::Current &);
+        
+        virtual void close(const std::string &fileName, const Ice::Current &);
+
+        virtual Files::FileContent read(const std::string &fileName, int offset,
+            int chunkSize, const Ice::Current &);
+        
     private:
 		void launchMaxima();
 

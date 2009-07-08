@@ -127,3 +127,50 @@ SeqOfFS FileServerImpl::dispatch(const std::string &fileName,
     return SeqOfFS(successful.begin(), successful.end());
 }
 
+void FileServerImpl::write(const std::string &fileName, int offset,
+    const FileContent &chunk)
+{
+    IceUtil::Mutex::Lock lock(*this);
+    FILE *f = _openedFiles[fileName];
+    if (f == NULL)
+    {
+        fs::path path = _directory / fileName;
+        f = fopen(path.external_file_string().c_str(), "wb+");
+        if (f == NULL)
+        {
+            _openedFiles.erase(fileName);
+            throw FileException(OtherPutException, "fopen() failed");
+        }
+        _openedFiles[fileName] = f;
+    }
+    
+    if (fseek(f, offset, SEEK_SET))
+    {
+        close(fileName);
+        throw FileException(OtherPutException, "fseek() failed");
+    }
+    if (fwrite(&(chunk[0]), chunk.size(), 1, f) != 1)
+    {
+        close(fileName);
+        throw FileException(OtherPutException, "fwrite() failed");
+    }
+}
+
+void FileServerImpl::close(const std::string &fileName)
+{
+    IceUtil::Mutex::Lock lock(*this);
+    std::map<std::string, FILE *>::iterator it = _openedFiles.find(fileName);
+    if (it == _openedFiles.end())
+    {
+        return;
+    }
+    fclose(it->second);
+    _openedFiles.erase(it);
+}
+
+FileContent FileServerImpl::read(const std::string &fileName, int offset,
+    int chunkSize)
+{
+    return FileContent();
+}
+

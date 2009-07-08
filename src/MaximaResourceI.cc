@@ -116,3 +116,20 @@ IARnet::Files::SeqOfFS MaximaResourceI::dispatch(const std::string &fileName,
     return _fs.dispatch(fileName, servers);
 }
 
+void MaximaResourceI::write(const std::string &fileName, int offset,
+    const Files::FileContent &chunk, const Ice::Current &)
+{
+    _fs.write(fileName, offset, chunk);
+}
+
+void MaximaResourceI::close(const std::string &fileName, const Ice::Current &)
+{
+    _fs.close(fileName);
+}
+
+IARnet::Files::FileContent MaximaResourceI::read(const std::string &fileName, int offset,
+    int chunkSize, const Ice::Current &)
+{
+    return _fs.read(fileName, offset, chunkSize);
+}
+

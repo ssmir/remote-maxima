@@ -49,6 +49,14 @@ class ICE_DECLSPEC_EXPORT MaximaFactoryI : virtual public MaximaFactory,
         virtual Files::SeqOfFS dispatch(const std::string &fileName,
             const Files::SeqOfFS &servers, const Ice::Current &);
         
+        virtual void write(const std::string &fileName, int offset,
+            const Files::FileContent &chunk, const Ice::Current &);
+        
+        virtual void close(const std::string &fileName, const Ice::Current &);
+
+        virtual Files::FileContent read(const std::string &fileName, int offset,
+            int chunkSize, const Ice::Current &);
+
     private:
         IARnet::Node::ServiceContext _context;
         Files::FileServerImpl _fs;
