@@ -28,7 +28,7 @@ module IARnet {
 			["ami"] string executeInteractive(string command) throws MaximaException;
 			
 			/** Sends SIGINT to a Maxima process. **/
-			void interrupt();
+			["ami"] void interrupt();
 			
 			/** Restarts a Maxima process without destroing its working
 				directory.
