@@ -53,8 +53,8 @@ class ICE_DECLSPEC_EXPORT MaximaResourceI : public MaximaResource,
     private:
 		void launchMaxima();
 
-		std::string _maximaPath;
-		std::string _workingDirectory;
+		const std::string _maximaPath;
+		const std::string _workingDirectory;
         boost::scoped_ptr<MaximaAPI::MaximaInstance> _maxima;
         IARnet::Node::ServiceContext _context;
         Files::FileServerImpl _fs;
