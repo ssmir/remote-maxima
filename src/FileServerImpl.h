@@ -29,8 +29,8 @@ public:
     static void saveFile(const fs::path &path, const FileContent &content);
     
 private:
-    fs::path _directory;
-	bool _removeOnDestroy;
+    const fs::path _directory;
+	const bool _removeOnDestroy;
 };
 
 }

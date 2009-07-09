@@ -7,6 +7,77 @@
 
 using namespace IARnet::Files;
 
+class Transaction : public IceUtil::Monitor<IceUtil::Mutex>
+{
+    std::set<FileServerPrx> _successful;
+    size_t _repliesLeft;
+    
+    public:
+        Transaction(std::set<FileServerPrx> &successful)
+        :   _successful(successful)
+        {
+        }
+        
+        void run(const std::string &fileName, const FileContent &file);
+        
+        void replyReceived(FileServerPrx prx, bool success)
+        {
+            IceUtil::Monitor<IceUtil::Mutex>::Lock lock(*this);
+            
+            if (!success)
+            {
+                _successful.erase(prx);
+            }
+            
+            if (--_repliesLeft == 0)
+            {
+                notify();
+            }
+        }
+};
+
+class AMI_FileServer_putFileI : public AMI_FileServer_putFile
+{
+    Transaction *_master;
+    FileServerPrx _prx;
+    
+    public:
+        AMI_FileServer_putFileI(FileServerPrx prx, Transaction *master)
+        :   _master(master),
+            _prx(prx)
+        {
+        }
+        
+        virtual void ice_response()
+        {
+            _master->replyReceived(_prx, true);
+        }
+        
+        virtual void ice_exception(const Ice::Exception &e)
+        {
+            _master->replyReceived(_prx, false);
+        }
+};
+
+void Transaction::run(const std::string &fileName, const FileContent &file)
+{
+    IceUtil::Monitor<IceUtil::Mutex>::Lock lock(*this);
+    
+    _repliesLeft = _successful.size();
+    for (std::set<FileServerPrx>::const_iterator it = _successful.begin();
+        it != _successful.end(); ++it)
+    {
+        (*it)->putFile_async(new AMI_FileServer_putFileI(*it, this),
+            fileName, file);
+    }
+    
+    do
+    {
+        wait();
+    }
+    while (_repliesLeft > 0);
+}
+
 FileServerImpl::FileServerImpl(const fs::path &directory, bool removeOnDestroy)
 :   _directory(directory),
 	_removeOnDestroy(removeOnDestroy)
@@ -94,18 +165,7 @@ SeqOfFS FileServerImpl::dispatch(const std::string &fileName,
     FileContent file = getFile(fileName);
     std::set<FileServerPrx> successful(servers.begin(), servers.end());
     
-    for (SeqOfFS::const_iterator it = servers.begin();
-        it != servers.end(); ++it)
-    {
-        try 
-        {
-            (*it)->putFile(fileName, file);
-        }
-        catch (const FileException &)
-        {
-            successful.erase(*it);
-        }
-    }
+    Transaction(successful).run(fileName, file);
     
     return SeqOfFS(successful.begin(), successful.end());
 }
