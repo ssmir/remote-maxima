@@ -1,0 +1,8 @@
+syntax: regexp
+.DS_Store
+rules.local$
+.o$
+.d$
+.dylib$
+.so$
+

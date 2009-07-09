@@ -1,0 +1,22 @@
+# Suffix of shared objects (dll's) for the current platform.
+SOEXT := dylib
+
+# Boost toolset name to build boost for the current platform 
+BOOST_TOOLSET := darwin
+
+# Command to create a symbolic link
+LN = ln -h -sf
+
+# Name of a boost jam binary archieve
+BOOST_JAM = boost-jam-3.1.16-1-macosxppc.gtar
+
+SOFLAGS = -dynamiclib
+
+BOOST_LIBS ?= $(patsubst %,$(BOOST_HOME)/stage/lib/lib%.a,$(1))
+
+UB_COMMON = -arch i386 -mmacosx-version-min=10.4 \
+	-isysroot /Developer/SDKs/MacOSX10.4u.sdk
+
+#CXXFLAGS += $(UB_COMMON)
+#LDFLAGS += $(UB_COMMON)
+
