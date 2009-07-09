@@ -31,6 +31,14 @@ module IARnet {
 				
 			SeqOfFS dispatch(string fileName, SeqOfFS recipients)
 				throws FileException;
+				
+			["ami"] void write(string fileName, int offset, FileContent chunk)
+				throws FileException;
+			
+			void close(string fileName);
+			
+			["ami"] FileContent read(string fileName, int offset, int chunkSize)
+				throws FileException;
 		};
 	};
 };
