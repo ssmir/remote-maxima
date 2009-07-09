@@ -1,4 +1,4 @@
-﻿/*  remote-maxima - a CAS Maxima C++ API and a Grid-service
+/*  remote-maxima - a CAS Maxima C++ API and a Grid-service
 	Copyright (C) 2007-2009 Sergey Smirnov <sasmir (at) gmail.com>
 
     This program is free software; you can redistribute it and/or modify
