@@ -305,6 +305,7 @@ Node::ServiceList::iterator Node::findService(const std::string &serviceId)
         {
             return it;
         }
+        ++it;
     }
     return it;
 }
