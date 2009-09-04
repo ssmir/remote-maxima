@@ -11,10 +11,10 @@ create_dirs :
 	mkdir -p lib
 
 %_build :
-	make -C $*
+	$(MAKE) -C $*
 
 %_clean :
-	make -C $* clean
+	$(MAKE) -C $* clean
 
 clean: slice_clean src_clean test_clean examples_clean
 
