@@ -16,5 +16,5 @@ BOOST_LIBS ?= $(patsubst %,$(BOOST_HOME)/stage/lib/lib%-gcc40-mt-1_34_1.a,$(1))
 
 CXXFLAGS += -fPIC
 
-LDFLAGS += -Wl,-rpath,$(ICE_HOME)/lib:.
+LDFLAGS += -Wl,-rpath,$(ICE_HOME)/lib:$(BOOST_LIB):.
 
