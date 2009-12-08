@@ -20,3 +20,4 @@ UB_COMMON = -arch i386 -mmacosx-version-min=10.4 \
 #CXXFLAGS += $(UB_COMMON)
 #LDFLAGS += $(UB_COMMON)
 
+JNI_SUFFIX = jnilib
