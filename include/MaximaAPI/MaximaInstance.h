@@ -54,11 +54,14 @@ class MaximaInstance {
 			directory of the application that's using MaximaDriver.
             
             @param[in] maximaPath A full path to a Maxima executable.
-            @param[in] workingDir RELATIVE path to a working directory of a
+            @param[in] workingDir Path to a working directory of a
                 new maxima process. The directory must exist.
+            @param[in] utilsDir A path to a directory that contains
+                maximag-disp.lisp and winkill.exe.
 		*/
         MaximaInstance(const std::string &maximaPath,
-            const std::string &workingDir = ".");
+            const std::string &workingDir = ".",
+            const std::string &utilsDir = ".");
         
 		/**
 		*/
@@ -181,6 +184,7 @@ class MaximaInstance {
         MaximaIOHook *maximaIOHook;
         boost::regex maximaIOHookRegex;
         fs::path _workingDirectory;
+        fs::path _utilsDir;
         size_t _lastPromptId;
 		size_t _pid;
 };
