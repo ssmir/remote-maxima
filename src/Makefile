@@ -9,7 +9,7 @@ MAXIMA_SERVICE_OBJ = Maxima.o MaximaFactoryI.o MaximaResourceI.o FileServerImpl.
 	MasterFactoryI.o FileServer.o
 LOCAL_OBJ := $(NODE_OBJ) $(MAXIMA_SERVICE_OBJ) MaximaInstanceTest.o MaximaInstance.o
 
-all: $(TOP)/bin/node $(TOP)/lib/libMaximaService.$(SOEXT)
+all: $(TOP)/bin/node $(TOP)/lib/libMaximaService.$(SOEXT) $(TOP)/lib/libMaximaInstance.$(JNI_SUFFIX)
 
 $(TOP)/bin/node: main.o $(TOP)/lib/libIARnet.$(SOEXT)
 	$(CXX) $(LDFLAGS) -o $@ $< -lIARnet $(LIBS)
@@ -29,9 +29,13 @@ $(TOP)/lib/libMaximaService.$(SOEXT): $(MAXIMA_SERVICE_OBJ) $(TOP)/lib/libMaxima
 $(TOP)/lib/libMaximaAPI.a : MaximaInstance.o
 	ar -r $@ $?
 
+$(TOP)/lib/libMaximaInstance.$(JNI_SUFFIX) : ru_isa_dcs_ssmir_maxima_MaximaInstance.o $(TOP)/lib/libMaximaAPI.a
+	$(CXX) $(SOFLAGS) $(LDFLAGS) -o $@ $^ $(call BOOST_WRAP_SHARED_LIBS, boost_regex boost_filesystem boost_system)
+
 clean:
 	rm -f *.o *.d $(TOP)/bin/node $(TOP)/lib/libMaximaAPI.a \
-		$(TOP)/lib/libIARnet.$(SOEXT) $(TOP)/lib/libMaximaService.$(SOEXT)
+		$(TOP)/lib/libIARnet.$(SOEXT) $(TOP)/lib/libMaximaService.$(SOEXT) \
+		$(TOP)/lib/libMaximaInstance.$(JNI_SUFFIX)
 
 include $(TOP)/rules.deps
 
