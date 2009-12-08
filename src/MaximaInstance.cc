@@ -109,7 +109,7 @@ void MaximaInstance::sendCommand(std::string command) {
         if (state == STATE_END && (i + 1) != command.size())
         {
             throw std::runtime_error("Bad expression: "
-                "only one ;|$ terminated expression a time is allowed");
+                "only one ;|$ terminated expression at a time is allowed");
         }
     }
     if (state != STATE_END)
