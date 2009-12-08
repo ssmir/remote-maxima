@@ -31,8 +31,9 @@ MaximaInstance::MaximaIOHook::~MaximaIOHook()
 }
 
 MaximaInstance::MaximaInstance(const std::string &maximaPath,
-    const std::string &workingDir)
-:   _workingDirectory(fs::initial_path() / workingDir),
+    const std::string &workingDir, const std::string &utilsDir)
+:   _workingDirectory(fs::system_complete(workingDir)),
+    _utilsDir(fs::system_complete(utilsDir)),
     _lastPromptId(1),
 	_pid(0)
 {
@@ -40,8 +41,7 @@ MaximaInstance::MaximaInstance(const std::string &maximaPath,
 	args.push_back(maximaPath);
 	args.push_back("-q");
 	args.push_back("-p");
-	args.push_back(
-        (fs::initial_path() / "maximag-disp.lisp").external_file_string());
+	args.push_back((_utilsDir / "maximag-disp.lisp").external_file_string());
 
 	bp::context ctx;
 	ctx.stdin_behavior = bp::capture_stream();
@@ -317,7 +317,7 @@ void MaximaInstance::doInterrupt(int pid)
         throw std::runtime_error(err.str());
     }
 #else
-    fs::path winkill = fs::initial_path() / "winkill.exe";
+    fs::path winkill = _utilsDir / "winkill.exe";
     
     std::vector<std::string> args;
 	args.push_back(winkill.external_file_string());
