@@ -63,6 +63,9 @@ class ICE_DECLSPEC_EXPORT MaximaFactoryI : virtual public MaximaFactory,
         MasterFactoryPrx _master;
         MaximaFactoryPrx _proxy;
         size_t _maximaCount;
+        
+    protected:
+        bool _masterFactory;
 };
 
 }
