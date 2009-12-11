@@ -19,3 +19,5 @@ CXXFLAGS += -fPIC
 LDFLAGS += -Wl,-rpath,$(ICE_HOME)/lib:$(BOOST_LIB):.
 
 JNI_SUFFIX = so
+
+CPPFLAGS += -I$(JAVA_HOME)/include/linux

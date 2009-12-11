@@ -29,3 +29,5 @@ BOOST_PROCESS_INCLUDE := $(BOOST_INCLUDE)
 # Path to a CxxTest installation
 CXXTEST_HOME := $(HOME)/cxxtest
 
+# Path a to Java installation
+JAVA_HOME := /usr/lib/jvm/java-6-sun-1.6.0.14

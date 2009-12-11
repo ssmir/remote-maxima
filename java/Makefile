@@ -7,7 +7,7 @@ JNI_HEADERS := $(TOP)/src/ru_isa_dcs_ssmir_maxima_MaximaInstance.h
 default: $(TOP)/lib/MaximaInstance.jar $(JNI_HEADERS)
 
 $(TOP)/lib/MaximaInstance.jar : javaClasses
-	jar vcf $@ `find ru -name '*.class'`
+	$(JAVA_HOME)/bin/jar vcf $@ `find ru -name '*.class'`
 
 $(JNI_HEADERS) : %.h : javaClasses
 	$(JAVA_HOME)/bin/javah -o $@ $(subst _,.,$(notdir $*))
