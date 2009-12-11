@@ -262,7 +262,10 @@ void ServantLocator::removeServant(const std::string &name,
             + "/" + name + " (" + facet + "): it doesn't exist");
         return;
     }
+    Ice::ObjectPtr servantToKill(it->second._servant);
     _servants.erase(it);
+    lock.release();
+    servantToKill = Ice::ObjectPtr();
     
     _log->trace("ServantLocator", "Servant removed: " + id.category + "/"
         + id.name + " facet: '" + facet + "'");
@@ -272,15 +275,20 @@ void ServantLocator::removeServantsForService(const std::string &serviceId)
 {
     IceUtil::Mutex::Lock lock(*this);
     
+    std::list<Ice::ObjectPtr> servantsToKill;
+    
     ServantMap::iterator it = _servants.begin();
     while (it != _servants.end())
     {
         ServantMap::iterator copy = it++;
         if (copy->second._serviceId == serviceId)
         {
+            servantsToKill.push_back(copy->second._servant);
             _servants.erase(copy);
         }
     }
+    lock.release();
+    servantsToKill.clear();
 }
 
 ServantLocator::AlreadyRegisteredException::AlreadyRegisteredException(
