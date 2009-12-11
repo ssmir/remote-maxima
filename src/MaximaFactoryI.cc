@@ -32,11 +32,12 @@ MaximaFactoryI::MaximaFactoryI(const IARnet::Node::ServiceContext &context)
     _fs("common")
 {
     _maximaCount = 0;
+    _masterFactory = false;
 }
 
 MaximaFactoryI::~MaximaFactoryI()
 {
-    if (_master && _proxy != _master)
+    if (_master && !_masterFactory)
     {
         _master->unregisterFactory(_proxy);
     }
@@ -64,7 +65,7 @@ void MaximaFactoryI::serviceInit(const std::string &proxy)
     _proxy = MaximaFactoryPrx::checkedCast(
         _context.getCommunicator()->stringToProxy(proxy));
     
-    if (_master)// && _proxy != _master)
+    if (_master)// && !_masterFactory)
     {
         _master->registerFactory(_proxy);
     }

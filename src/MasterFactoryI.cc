@@ -22,6 +22,7 @@ using namespace IARnet::Maxima;
 MasterFactoryI::MasterFactoryI(const IARnet::Node::ServiceContext &context)
 :   MaximaFactoryI(context)
 {
+    _masterFactory = true;
 }
 
 void MasterFactoryI::registerFactory(const MaximaFactoryPrx &factory,
