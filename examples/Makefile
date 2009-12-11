@@ -9,6 +9,7 @@ LOCAL_OBJ := miclient.o mclient.o client.o
 
 all: mclient miclient client
 	echo MaximaMasterFactory.MaximaPath = $(MAXIMA_APP) > maxima_path.conf
+	echo MaximaFactory.MaximaPath = $(MAXIMA_APP) >> maxima_path.conf
 	echo 'export PATH=../bin:$$PATH' > paths.sh
 	echo "export ICE_HOME="$(ICE_HOME) >> paths.sh
 
