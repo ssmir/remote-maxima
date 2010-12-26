@@ -1,0 +1,23 @@
+# Suffix of shared objects (dll's) for the current platform.
+SOEXT := so
+
+# Boost toolset name to build boost for the current platform 
+BOOST_TOOLSET := gcc
+
+# Command to create a symbolic link
+LN = ln -T -sf
+
+# Name of a boost jam binary archieve
+BOOST_JAM = boost-jam-3.1.13-1-linuxx86.tgz
+
+SOFLAGS = -shared
+
+BOOST_LIBS ?= $(patsubst %,$(BOOST_HOME)/stage/lib/lib%-gcc40-mt-1_34_1.a,$(1))
+
+CXXFLAGS += -fPIC
+
+LDFLAGS += -Wl,-rpath,$(ICE_HOME)/lib:$(BOOST_LIB):.
+
+JNI_SUFFIX = so
+
+CPPFLAGS += -I$(JAVA_HOME)/include/linux

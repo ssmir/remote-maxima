@@ -1,0 +1,9 @@
+CXXFLAGS += -O0 -g -Wall -ftemplate-depth-128
+CPPFLAGS += -I. -I.. -I$(BOOST_INCLUDE) -I$(BOOST_PROCESS_INCLUDE) -I$(TOP)/include \
+	-I$(ICE_HOME)/include -I$(JAVA_HOME)/include -I$(JAVA_HOME)/../Headers
+LDFLAGS += -L$(TOP)/lib -L$(ICE_HOME)/lib
+LIBS += $(call BOOST_WRAP_SHARED_LIBS, boost_regex boost_filesystem boost_system)
+
+include $(TOP)/rules.$(shell uname)
+include $(TOP)/rules.local
+
