@@ -5,9 +5,13 @@ syntax: glob
 *.dylib
 *.so
 *.a
+*.jnilib
+*.os
+*.pyc
+*.class
 
 rules.local
-bin/node
+bin/node*
 examples/client
 examples/maxima_path.conf
 examples/mclient
@@ -26,3 +30,4 @@ src/Maxima.h
 src/Security.cc
 include/IARnet/Security.h
 
+.sconf_temp
