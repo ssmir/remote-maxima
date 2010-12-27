@@ -10,8 +10,9 @@ def CreateDescription():
             ('CXXTEST_HOME', 'Path to a directory which contains cxxtest'),
             ('BOOST_PROCESS_INCLUDES', 'Path to a directory which contains the boost includes directory'),
             ('BOOST_INCLUDES', 'Path to a directory which contains the boost includes directory'),
-            ('ICE_INCLUDES', ''),
-            ('ICE_SLICE', ''),
-            ('ICE_SLICE2CPP', ''))
+            ('ICE_INCLUDES', 'C++ headers for ZeroC Ice'),
+            ('ICE_LIB_PATH', 'ZeroC Ice libraries path'),
+            ('SLICE2CPP', 'ZeroC Ice slice2cpp translator'),
+            ('SLICE_INCLUDES', 'ZeroC Ice built-in slices'))
     return cmdVars
 
