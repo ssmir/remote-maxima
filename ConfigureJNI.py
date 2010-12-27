@@ -1,4 +1,4 @@
-# from http://www.scons.org/wiki/JavaNativeInterface
+# from http://www.scons.org/wiki/JavaNativeInterface with some modifications
 import os
 import sys
 
@@ -27,7 +27,7 @@ def ConfigureJNI(env):
     if not java_base:
         if sys.platform == 'darwin':
             # Apple's OS X has its own special java base directory
-            java_base = '/System/Library/Frameworks/JavaVM.framework'
+            java_base = '/System/Library/Frameworks/JavaVM.framework/Home'
         else:
             # Search for the java compiler
             print "JAVA_HOME environment variable is not set. Searching for java... ",
@@ -49,8 +49,8 @@ def ConfigureJNI(env):
 
     if sys.platform == 'darwin':
         # Apple does not use Sun's naming convention
-        java_headers = [os.path.join(java_base, 'Headers')]
-        java_libs = [os.path.join(java_base, 'Libraries')]
+        java_headers = [os.path.join(java_base, 'bundle/Headers')]
+        java_libs = [os.path.join(java_base, 'bundle/Libraries')]
     else:
         # windows and linux
         java_headers = [os.path.join(java_base, 'include')]

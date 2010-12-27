@@ -2,6 +2,8 @@
 
 maximaInstance = env.SharedObject('MaximaInstance.cc')
 
+env.JavaH(source = '#java/ru/isa/dcs/ssmir/maxima/MaximaInstance.java')	
+
 if ('CPPDEFINES' in env) and ('HAS_ICE' in env['CPPDEFINES']):
     NodeLibSource = File(['ServantLocator.cc', 'Security.cc', 'AccessDeniedServant.cc',
         'Node.cc', 'InfoService.cc', 'Service.cc', 'ServiceContext.cc'])
@@ -11,7 +13,6 @@ if ('CPPDEFINES' in env) and ('HAS_ICE' in env['CPPDEFINES']):
     nodeLib = env.SharedLibrary(target = "#lib/IARnet", source = [NodeLibSource],
         CPPDEFINES = 'NODEDLL')
     env.Install('/lib/', nodeLib)
-    #apiLib = env.StaticLibrary(target = '#lib/MaximaAPI', source = ['MaximaInstance.cc'])
     
     env.Install('/bin/', env.Program(target = "#bin/node", source = ['main.cc'],
         LIBS = [nodeLib, env['LIBS']]))
@@ -24,4 +25,7 @@ env.Install('/lib/', env.SharedLibrary(target = '#lib/MaximaInstance',
     source = [maximaInstance, 'ru_isa_dcs_ssmir_maxima_MaximaInstance.cc'],
     LIBS = ['boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt'],
     SHLIBSUFFIX = env['JNI_SUFFIX']))
+
+env.Install('/include/', ['AccessDeniedServant.h', 'Node.h', 'portdefs.h',
+    'ServantLocator.h', 'Service.h', 'ServiceContext.h', 'SOExportDefs.h'])
 

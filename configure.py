@@ -7,14 +7,15 @@ def runCommand(cmd):
     out = p.stdout.read().strip()
     return out
     
-def CheckIce(context, includes, libs):
+def CheckIce(context, includes_path, libs_path):
     source = """
     #include <Ice/Ice.h>
     int main() {
         Ice::PropertyDict dict;
         return 0;
     }"""
-    context.env.Append(CPPPATH = [includes], LIBPATH = [libs], LIBS = ['IceUtil', 'Ice'])
+    context.env.Append(CPPPATH = [includes_path], LIBPATH = [libs_path],
+        LIBS = ['IceUtil', 'Ice'])
 
     result = context.TryLink(source, '.cc')
     if not result:
@@ -22,7 +23,7 @@ def CheckIce(context, includes, libs):
         context.env.Append(LIBS = ['ZeroCIce'])
         result = context.TryLink(source, '.cc')
     
-    if not result or (includes == '' and libs == ''):
+    if not result or (includes_path == '' and libs_path == ''):
         context.env['CPPPATH'].pop()
         context.env['LIBPATH'].pop()
     if not result:
