@@ -24,6 +24,12 @@ baseEnv['BUILDERS']['Slice2cpp'] = Builder(
     single_source = 1
 )
 
+def MyInstallBld(env, target, source):
+    if 'DO_PACKAGE' in env:
+        return env.Install(target, source)
+    return []
+baseEnv['BUILDERS']['MyInstall'] = MyInstallBld
+
 baseEnv.Append(
     CPPPATH = ['.', '#include', '$BOOST_INCLUDES', '$BOOST_PROCESS_INCLUDES'],
     LIBPATH = ['#lib'],
@@ -64,18 +70,20 @@ elif platform.system() == "Linux":
     
     releaseEnv = baseEnv.Clone(DEBUG = 0)
     releaseEnv.Append(CCFLAGS = ['-O3'])
+    
+debugEnv['DO_PACKAGE'] = True
 
 for env in [debugEnv, releaseEnv]:
     env.VariantDir('${VARDIR}', '.', duplicate = 0)
     env.SConscript(dirs = ['${VARDIR}/java', '${VARDIR}/slice', '${VARDIR}/src'], exports = 'env')
-
-baseEnv.Package(
-    NAME = 'remote-maxima-${MY_PLATFORM}',
-    VERSION = '0.1',
-    SUMMARY = 'Simple C++ CAS Maxima API and a RPC service based on it.',
-    DESCRIPTION    = """""",
-    VENDOR = 'Sergey Smirnov <sasmir@gmail.com>',
-    X_MSI_LANGUAGE = 'en-us')
+    if 'DO_PACKAGE' in env:
+        env.Package(
+            NAME = 'remote-maxima-${MY_PLATFORM}',
+            VERSION = '0.1',
+            SUMMARY = 'Simple C++ CAS Maxima API and a RPC service based on it.',
+            DESCRIPTION    = """""",
+            VENDOR = 'Sergey Smirnov <sasmir@gmail.com>',
+            X_MSI_LANGUAGE = 'en-us')
 
 #debugEnv.Alias('debug', map(lambda x: x['buildtarget'], msvsPacks[debugEnv['DEBUG']]))
 #releaseEnv.Alias('release', map(lambda x: x['buildtarget'], msvsPacks[releaseEnv['DEBUG']]))
