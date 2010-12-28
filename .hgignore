@@ -31,3 +31,4 @@ src/Security.cc
 include/IARnet/Security.h
 
 .sconf_temp
+build-*
