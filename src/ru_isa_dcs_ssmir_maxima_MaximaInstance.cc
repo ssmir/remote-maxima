@@ -6,7 +6,7 @@
 */
 
 #include "ru_isa_dcs_ssmir_maxima_MaximaInstance.h"
-#include <MaximaAPI/MaximaInstance.h>
+#include "MaximaInstance.h"
 
 MaximaAPI::MaximaInstance *getMaximaInstance(JNIEnv *env, jobject obj) {
     jfieldID id = env->GetFieldID(env->GetObjectClass(obj), "_ptr", "J");

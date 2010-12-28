@@ -16,7 +16,7 @@
 */
 
 #include "MaximaResourceI.h"
-#include <MaximaAPI/MaximaInstance.h>
+#include "MaximaInstance.h"
 
 using namespace IARnet::Maxima;
 
