@@ -11,14 +11,14 @@ def idl2many_emitter(target, source, env):
     newTarget = []
     src = source[0]
     dst = target[0]
-    if str(src).endswith('.slice'):
+    if str(src).endswith('.ice'):
         for suffix in ['.cc', '.h']:
             newTarget.append(str(dst) + suffix)
     return (newTarget, source)
 
 baseEnv['BUILDERS']['Slice2cpp'] = Builder(
     action="${SLICE2CPP} --source-ext=cc -I${SLICE_INCLUDES} -I. ${SLICEFLAGS} --output-dir ${TARGET.dir} ${SOURCE}",
-    src_suffix = '.slice',
+    src_suffix = '.ice',
     emitter = idl2many_emitter,
     source_scanner = SCons.Scanner.IDL.IDLScan(),
     single_source = 1
@@ -27,8 +27,7 @@ baseEnv['BUILDERS']['Slice2cpp'] = Builder(
 baseEnv.Append(
     CPPPATH = ['.', '#include', '$BOOST_INCLUDES', '$BOOST_PROCESS_INCLUDES'],
     LIBPATH = ['#lib'],
-    VARDIR = "build-${MY_PLATFORM}-${DEBUG and 'debug' or 'release'}",
-    SLICEFLAGS = '--include-dir IARnet')
+    VARDIR = "build-${MY_PLATFORM}-${DEBUG and 'debug' or 'release'}")
 
 if platform.system() == "Darwin":
     baseEnv.Append(
@@ -68,7 +67,7 @@ elif platform.system() == "Linux":
 
 for env in [debugEnv, releaseEnv]:
     env.VariantDir('${VARDIR}', '.', duplicate = 0)
-    env.SConscript(dirs = ['${VARDIR}/slice', '${VARDIR}/src'], exports = 'env')
+    env.SConscript(dirs = ['${VARDIR}/java', '${VARDIR}/slice', '${VARDIR}/src'], exports = 'env')
 
 baseEnv.Package(
     NAME = 'remote-maxima-${MY_PLATFORM}',
