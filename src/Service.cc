@@ -15,7 +15,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <IARnet/Service.h>
+#include "Service.h"
 
 IARnet::Node::Service::~Service()
 {
