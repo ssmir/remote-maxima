@@ -1,0 +1,6 @@
+Import('env')
+
+objs = env.Java(target = 'classes', source = '.')
+if len(objs):
+    env.JavaH(target = '../src', source = objs)
+
