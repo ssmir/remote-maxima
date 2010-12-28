@@ -1,7 +1,8 @@
 Import('env')
 
-env.Slice2cpp(target = '../src/FileServer', source = 'FileServer.ice')
-env.Slice2cpp(target = '../src/InfoService', source = 'InfoService.ice')
-env.Slice2cpp(target = '../src/Maxima', source = 'Maxima.ice')
-env.Slice2cpp(target = '../src/Security', source = 'Security.ice')
+if ('CPPDEFINES' in env) and ('HAS_ICE' in env['CPPDEFINES']):
+    env.Slice2cpp(target = '../src/FileServer', source = 'FileServer.ice')
+    env.Slice2cpp(target = '../src/InfoService', source = 'InfoService.ice')
+    env.Slice2cpp(target = '../src/Maxima', source = 'Maxima.ice')
+    env.Slice2cpp(target = '../src/Security', source = 'Security.ice')
 
