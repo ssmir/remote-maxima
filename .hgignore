@@ -32,3 +32,4 @@ include/IARnet/Security.h
 
 .sconf_temp
 build-*
+remote-maxima-*
