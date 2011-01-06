@@ -4,7 +4,7 @@ import configure, variables
 import SCons.Scanner.IDL
 
 cmdVars = variables.CreateDescription()
-baseEnv = Environment(variables = cmdVars, tools=['default', 'packaging'])
+baseEnv = Environment(variables = cmdVars, tools=['default', 'packaging', 'textfile'])
 Help(cmdVars.GenerateHelpText(baseEnv))
 
 def idl2many_emitter(target, source, env):
@@ -31,7 +31,7 @@ def MyInstallBld(env, target, source):
 baseEnv['BUILDERS']['MyInstall'] = MyInstallBld
 
 baseEnv.Append(
-    CPPPATH = ['.', '#include', '$BOOST_INCLUDES', '$BOOST_PROCESS_INCLUDES'],
+    CPPPATH = ['#${VARDIR}/src', '#src', '$BOOST_INCLUDES', '$BOOST_PROCESS_INCLUDES'],
     LIBPATH = ['#lib'],
     VARDIR = "build-${MY_PLATFORM}-${DEBUG and 'debug' or 'release'}")
 
@@ -48,9 +48,6 @@ if not baseEnv.GetOption('clean'):
     
 debugEnv = baseEnv.Clone(DEBUG = 1)
 debugEnv.Append(CCFLAGS = ['-g', '-O0'])
-debugEnv['PROGSUFFIX'] = 'd' + debugEnv['PROGSUFFIX']
-debugEnv['SHLIBSUFFIX'] = 'd' + debugEnv['SHLIBSUFFIX']
-debugEnv['JNI_SUFFIX'] = 'd' + debugEnv['JNI_SUFFIX']
 
 releaseEnv = baseEnv.Clone(DEBUG = 0)
 releaseEnv.Append(CCFLAGS = ['-O3'])
@@ -59,7 +56,7 @@ debugEnv['DO_PACKAGE'] = True
 
 for env in [debugEnv, releaseEnv]:
     env.VariantDir('${VARDIR}', '.', duplicate = 0)
-    env.SConscript(dirs = ['${VARDIR}/java', '${VARDIR}/slice', '${VARDIR}/src'], exports = 'env')
+    env.SConscript(dirs = ['${VARDIR}/examples', '${VARDIR}/java', '${VARDIR}/slice', '${VARDIR}/src'], exports = 'env')
     if 'DO_PACKAGE' in env:
         env.Package(
             NAME = 'remote-maxima-${MY_PLATFORM}',

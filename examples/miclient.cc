@@ -16,7 +16,7 @@
 */
 
 #include <Ice/Application.h>
-#include <MaximaAPI/MaximaInstance.h>
+#include <MaximaInstance.h>
 #include <iostream>
 
 using std::cout;
