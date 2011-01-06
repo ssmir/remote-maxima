@@ -15,6 +15,7 @@ def CreateDescription():
             ('SLICE2CPP', 'ZeroC Ice slice2cpp translator'),
             ('SLICE_INCLUDES', 'ZeroC Ice built-in slices'),
             ('MAXIMA_APP', 'Path to the Maxima executable for examples'),
-            ('CXXTEST_HOME', 'CxxTest distribution'))
+            ('CXXTEST_HOME', 'CxxTest distribution'),
+            BoolVariable('ICE_ENABLE', 'Enable/disable building of Ice dependent parts', True))
     return cmdVars
 
