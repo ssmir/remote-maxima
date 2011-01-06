@@ -4,11 +4,13 @@ import configure, variables, builders
 
 cmdVars = variables.CreateDescription()
 baseEnv = Environment(variables = cmdVars, tools = ['default', 'packaging', 'textfile'])
-baseEnv.Tool('cxxtest', [baseEnv['CXXTEST_HOME'] + '/build_tools/SCons'],
-    CXXTEST = baseEnv['CXXTEST_HOME'] + '/python/scripts/cxxtestgen',
-    CXXTEST_CPPPATH = baseEnv['CXXTEST_HOME'],
-    CXXTEST_OPTS = '--have-eh --abort-on-fail',
-    CXXTEST_SUFFIX = 'Test.h')
+
+if baseEnv['CXXTEST_HOME']:
+    baseEnv.Tool('cxxtest', [baseEnv['CXXTEST_HOME'] + '/build_tools/SCons'],
+        CXXTEST = baseEnv['CXXTEST_HOME'] + '/python/scripts/cxxtestgen',
+        CXXTEST_CPPPATH = baseEnv['CXXTEST_HOME'],
+        CXXTEST_OPTS = '--have-eh --abort-on-fail',
+        CXXTEST_SUFFIX = 'Test.h')
 builders.addSlice2cppBuilder(baseEnv)
 builders.addMyInstallBuilder(baseEnv)
 
@@ -16,7 +18,7 @@ Help(cmdVars.GenerateHelpText(baseEnv))
 
 baseEnv.Append(
     CPPPATH = ['#${VARDIR}/src', '#src', '$BOOST_INCLUDES', '$BOOST_PROCESS_INCLUDES'],
-    LIBPATH = ['#lib'],
+    LIBPATH = ['#lib', '$BOOST_LIB_PATH'],
     LIBS = [], # to make clean working (undefined if configure is skipped)
     VARDIR = "build-${MY_PLATFORM}-${DEBUG and 'debug' or 'release'}",
     MY_PLATFORM = platform.system() + "-" + configure.runCommand('uname -m'),

@@ -71,15 +71,6 @@ def FindHeader(context, header, cmdArg):
     context.Result(result)
     return result
 
-def CheckFoxXft(context):
-    context.Message('Checking for Xft support in FOX Toolkit...')
-    libs = runCommand(context.env['FOX_CONFIG'] + " --libs")
-    result = (libs.find("-lXft") != -1)
-    if not result:
-        context.env.Append(CPPDEFINES = ['NO_FOX_XFT'])
-    context.Result(result)
-    return result
-
 def FindJNIHeaders(context):
     context.Message('Finding jni.h path... ')
     result = ConfigureJNI.ConfigureJNI(context.env)
