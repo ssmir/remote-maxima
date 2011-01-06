@@ -14,6 +14,7 @@ def CreateDescription():
             ('ICE_LIB_PATH', 'ZeroC Ice libraries path'),
             ('SLICE2CPP', 'ZeroC Ice slice2cpp translator'),
             ('SLICE_INCLUDES', 'ZeroC Ice built-in slices'),
-            ('MAXIMA_APP', 'Path to the Maxima executable for examples'))
+            ('MAXIMA_APP', 'Path to the Maxima executable for examples'),
+            ('CXXTEST_HOME', 'CxxTest distribution'))
     return cmdVars
 

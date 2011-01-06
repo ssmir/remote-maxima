@@ -4,7 +4,13 @@ import configure, variables
 import SCons.Scanner.IDL
 
 cmdVars = variables.CreateDescription()
-baseEnv = Environment(variables = cmdVars, tools=['default', 'packaging', 'textfile'])
+baseEnv = Environment(variables = cmdVars, tools = ['default', 'packaging', 'textfile'])
+baseEnv.Tool('cxxtest', [baseEnv['CXXTEST_HOME'] + '/build_tools/SCons'],
+    CXXTEST = baseEnv['CXXTEST_HOME'] + '/python/scripts/cxxtestgen',
+    CXXTEST_CPPPATH = baseEnv['CXXTEST_HOME'],
+    CXXTEST_OPTS = '--have-eh --abort-on-fail',
+    CXXTEST_SUFFIX = 'Test.h')
+
 Help(cmdVars.GenerateHelpText(baseEnv))
 
 def idl2many_emitter(target, source, env):
@@ -55,8 +61,9 @@ releaseEnv.Append(CCFLAGS = ['-O3'])
 debugEnv['DO_PACKAGE'] = True
 
 for env in [debugEnv, releaseEnv]:
-    env.VariantDir('${VARDIR}', '.', duplicate = 0)
-    env.SConscript(dirs = ['${VARDIR}/examples', '${VARDIR}/java', '${VARDIR}/slice', '${VARDIR}/src'], exports = 'env')
+    env.VariantDir('${VARDIR}', '.')
+    env.SConscript(dirs = ['${VARDIR}/test', '${VARDIR}/examples', '${VARDIR}/java',
+        '${VARDIR}/slice', '${VARDIR}/src'], exports = 'env')
     if 'DO_PACKAGE' in env:
         env.Package(
             NAME = 'remote-maxima-${MY_PLATFORM}',

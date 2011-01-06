@@ -16,7 +16,7 @@
 */
 
 #include "cxxtest/TestSuite.h"
-#include <MaximaAPI/MaximaInstance.h>
+#include <MaximaInstance.h>
 #include <string.h>
 
 using namespace MaximaAPI;
@@ -26,11 +26,13 @@ class MaximaInstanceTest : public CxxTest::TestSuite,
 {
     MaximaInstance *maxima;
     
-    void launchMaxima(const std::string &workingDir = ".")
+    void launchMaxima(const std::string &workingDir = MAXIMA_TEST_DIR)
     {
-        char *maximaPath = getenv("MAXIMA_APP");
+        const char *maximaPath = getenv("MAXIMA_APP");
+        maximaPath = maximaPath ? maximaPath : MAXIMA_APP_PATH;
         TS_ASSERT(NULL != maximaPath);
-        maxima = new MaximaInstance(maximaPath, workingDir);
+        TS_ASSERT(0 != strlen(maximaPath));
+        maxima = new MaximaInstance(maximaPath, workingDir, MAXIMA_TEST_DIR);
         TS_ASSERT(NULL != maxima);
     }
     
@@ -93,7 +95,7 @@ public:
     
     void testWorkingDirectory()
     {
-        launchMaxima("..");
+        launchMaxima(std::string(MAXIMA_TEST_DIR) + "/..");
         TS_ASSERT_THROWS_ANYTHING(
             maxima->executeCommand("load(\"test123.mac\")"));
     }
