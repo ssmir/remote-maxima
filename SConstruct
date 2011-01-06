@@ -35,42 +35,26 @@ baseEnv.Append(
     LIBPATH = ['#lib'],
     VARDIR = "build-${MY_PLATFORM}-${DEBUG and 'debug' or 'release'}")
 
+baseEnv.Append(
+    MY_PLATFORM = platform.system() + "-" + configure.runCommand('uname -m'),
+    CCFLAGS = ['-Wall'],
+    JNI_SUFFIX = baseEnv['SHLIBSUFFIX'])
+
 if platform.system() == "Darwin":
-    baseEnv.Append(
-        MY_PLATFORM = "darwin-" + configure.runCommand('uname -m'),
-        CCFLAGS = ['-Wall'],
-        JNI_SUFFIX = '.jnilib')
+    baseEnv['JNI_SUFFIX'] = '.jnilib'
+
+if not baseEnv.GetOption('clean'):
+    baseEnv = configure.Configure(baseEnv)
     
-    if not baseEnv.GetOption('clean'):
-        baseEnv = configure.Configure(baseEnv)
-    
-    debugEnv = baseEnv.Clone(DEBUG = 1)
-    debugEnv.Append(CCFLAGS = ['-g', '-O0'])
-    debugEnv['PROGSUFFIX'] = 'd' + debugEnv['PROGSUFFIX']
-    debugEnv['SHLIBSUFFIX'] = 'd' + debugEnv['SHLIBSUFFIX']
-    debugEnv['JNI_SUFFIX'] = 'd' + debugEnv['JNI_SUFFIX']
-    
-    
-    releaseEnv = baseEnv.Clone(DEBUG = 0)
-    releaseEnv.Append(CCFLAGS = ['-O3'])
-elif platform.system() == "Linux":
-    baseEnv.Append(
-        MY_PLATFORM = "linux-" + configure.runCommand('uname -m'),
-        LINKFLAGS = '-Wl,-rpath,$ICE_HOME/lib:$BOOST_LIB:.',
-        CCFLAGS = ['-Wall'],
-        CPPPATH = ['$JAVA_HOME/include/linux'],
-        LIBS = ['Ice', 'IceUtil', 'IceSSL'])
-    
-    if not baseEnv.GetOption('clean'):
-        baseEnv = configure.Configure(baseEnv)
-    
-    debugEnv = baseEnv.Clone(DEBUG = 1)
-    debugEnv.Append(CCFLAGS = ['-g', '-O0'])
-    debugEnv['PROGSUFFIX'] = 'd' + debugEnv['PROGSUFFIX']
-    
-    releaseEnv = baseEnv.Clone(DEBUG = 0)
-    releaseEnv.Append(CCFLAGS = ['-O3'])
-    
+debugEnv = baseEnv.Clone(DEBUG = 1)
+debugEnv.Append(CCFLAGS = ['-g', '-O0'])
+debugEnv['PROGSUFFIX'] = 'd' + debugEnv['PROGSUFFIX']
+debugEnv['SHLIBSUFFIX'] = 'd' + debugEnv['SHLIBSUFFIX']
+debugEnv['JNI_SUFFIX'] = 'd' + debugEnv['JNI_SUFFIX']
+
+releaseEnv = baseEnv.Clone(DEBUG = 0)
+releaseEnv.Append(CCFLAGS = ['-O3'])
+
 debugEnv['DO_PACKAGE'] = True
 
 for env in [debugEnv, releaseEnv]:
