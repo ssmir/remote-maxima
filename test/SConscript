@@ -2,8 +2,9 @@ import os
 
 Import('env')
 
-env.SharedLibrary(target = 'SimpleService', source = ['SimpleService.cc'],
-    LIBS = ['IARnet', env['LIBS']])
+if env['ICE_ENABLE']:
+    env.SharedLibrary(target = 'SimpleService', source = ['SimpleService.cc'],
+        LIBS = ['IARnet', env['LIBS']])
 
 testEnv = env.Clone(ENV = {'PATH' : os.environ['PATH']})
 

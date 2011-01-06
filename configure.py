@@ -88,8 +88,8 @@ def FindJNIHeaders(context):
 
 def Configure(env):
     conf = env.Configure(custom_tests = {'FindHeader' : FindHeader,
-    'FindAndCheckIce' : FindAndCheckIce, 'FindJNIHeaders' : FindJNIHeaders})
-    if conf.FindAndCheckIce():
+        'FindAndCheckIce' : FindAndCheckIce, 'FindJNIHeaders' : FindJNIHeaders})
+    if conf.env['ICE_ENABLE'] and conf.FindAndCheckIce():
         conf.env.Append(CPPDEFINES = ['HAS_ICE'], LIBS = ['IceUtil', 'IceSSL'])
     if not conf.FindJNIHeaders():
         print 'jni.h is essential'

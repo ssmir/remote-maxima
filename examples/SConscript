@@ -6,15 +6,19 @@ targets = []
 
 targets.append(env.Program(target = 'mclient', source = ['mclient.cc', maximaInstance],
     LIBS = ['boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt']))
-targets.append(env.Program(target = 'miclient', source = ['miclient.cc', maximaInstance],
-    LIBS = [env['LIBS'], 'boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt']))
-targets.append(env.Program(target = 'client', source = ['client.cc', '../src/Maxima.cc',
-    '../src/FileServer.cc', '../src/FileServerImpl.cc'],
-    LIBS = [env['LIBS'], 'boost_filesystem-mt', 'boost_system-mt']))
 
-targets.append(env.Textfile(target = 'maxima_path.conf', source = [
-        'MaximaMasterFactory.MaximaPath = %s' % env['MAXIMA_APP'],
-        'MaximaFactory.MaximaPath = %s' % env['MAXIMA_APP']]))
+if env['ICE_ENABLE']:
+    targets.append(env.Program(target = 'miclient', source = ['miclient.cc', maximaInstance],
+        LIBS = [env['LIBS'], 'boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt']))
+    targets.append(env.Program(target = 'client', source = ['client.cc', '../src/Maxima.cc',
+        '../src/FileServer.cc', '../src/FileServerImpl.cc'],
+        LIBS = [env['LIBS'], 'boost_filesystem-mt', 'boost_system-mt']))
 
-env.MyInstall('/share/remote-maxima/examples/', [Glob('*.sh'), Glob('*.conf'),
-    'maximag-disp.lisp', targets])
+    targets.append(env.Textfile(target = 'maxima_path.conf', source = [
+            'MaximaMasterFactory.MaximaPath = %s' % env['MAXIMA_APP'],
+            'MaximaFactory.MaximaPath = %s' % env['MAXIMA_APP']]))
+
+    env.MyInstall('/share/remote-maxima/examples/', [Glob('*.sh'), Glob('*.conf')])
+
+env.MyInstall('/share/remote-maxima/examples/', ['maximag-disp.lisp', targets])
+
