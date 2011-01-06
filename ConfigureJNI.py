@@ -1,6 +1,7 @@
 # from http://www.scons.org/wiki/JavaNativeInterface with some modifications
 import os
 import sys
+import configure
 
 def walkDirs(path):
     """helper function to get a list of all subdirectories"""
@@ -62,6 +63,9 @@ def ConfigureJNI(env):
             java_headers.append(os.path.join(java_headers[0], 'win32'))
             java_headers.append(os.path.join(java_headers[0], 'linux'))
             java_headers.append(os.path.join(java_headers[0], 'solaris'))
+        elif sys.platform != 'win32':
+            jni_h = configure.runCommand('find ' + java_base + ' -name jni.h')
+            java_headers.append(os.path.dirname(jni_h))
         else:
             # add all subdirs of 'include'. The system specific headers
             # should be in there somewhere
