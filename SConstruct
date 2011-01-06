@@ -39,6 +39,7 @@ baseEnv['BUILDERS']['MyInstall'] = MyInstallBld
 baseEnv.Append(
     CPPPATH = ['#${VARDIR}/src', '#src', '$BOOST_INCLUDES', '$BOOST_PROCESS_INCLUDES'],
     LIBPATH = ['#lib'],
+    LIBS = [],
     VARDIR = "build-${MY_PLATFORM}-${DEBUG and 'debug' or 'release'}")
 
 baseEnv.Append(
