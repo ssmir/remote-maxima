@@ -1,7 +1,6 @@
 ﻿import sys
 import os, platform
-import configure, variables
-import SCons.Scanner.IDL
+import configure, variables, builders
 
 cmdVars = variables.CreateDescription()
 baseEnv = Environment(variables = cmdVars, tools = ['default', 'packaging', 'textfile'])
@@ -10,39 +9,16 @@ baseEnv.Tool('cxxtest', [baseEnv['CXXTEST_HOME'] + '/build_tools/SCons'],
     CXXTEST_CPPPATH = baseEnv['CXXTEST_HOME'],
     CXXTEST_OPTS = '--have-eh --abort-on-fail',
     CXXTEST_SUFFIX = 'Test.h')
+builders.addSlice2cppBuilder(baseEnv)
+builders.addMyInstallBuilder(baseEnv)
 
 Help(cmdVars.GenerateHelpText(baseEnv))
-
-def idl2many_emitter(target, source, env):
-    newTarget = []
-    src = source[0]
-    dst = target[0]
-    if str(src).endswith('.ice'):
-        for suffix in ['.cc', '.h']:
-            newTarget.append(str(dst) + suffix)
-    return (newTarget, source)
-
-baseEnv['BUILDERS']['Slice2cpp'] = Builder(
-    action="${SLICE2CPP} --source-ext=cc -I${SLICE_INCLUDES} -I. ${SLICEFLAGS} --output-dir ${TARGET.dir} ${SOURCE}",
-    src_suffix = '.ice',
-    emitter = idl2many_emitter,
-    source_scanner = SCons.Scanner.IDL.IDLScan(),
-    single_source = 1
-)
-
-def MyInstallBld(env, target, source):
-    if 'DO_PACKAGE' in env:
-        return env.Install(target, source)
-    return []
-baseEnv['BUILDERS']['MyInstall'] = MyInstallBld
 
 baseEnv.Append(
     CPPPATH = ['#${VARDIR}/src', '#src', '$BOOST_INCLUDES', '$BOOST_PROCESS_INCLUDES'],
     LIBPATH = ['#lib'],
-    LIBS = [],
-    VARDIR = "build-${MY_PLATFORM}-${DEBUG and 'debug' or 'release'}")
-
-baseEnv.Append(
+    LIBS = [], # to make clean working (undefined if configure is skipped)
+    VARDIR = "build-${MY_PLATFORM}-${DEBUG and 'debug' or 'release'}",
     MY_PLATFORM = platform.system() + "-" + configure.runCommand('uname -m'),
     CCFLAGS = ['-Wall'],
     JNI_SUFFIX = baseEnv['SHLIBSUFFIX'])
@@ -73,7 +49,4 @@ for env in [debugEnv, releaseEnv]:
             DESCRIPTION    = """""",
             VENDOR = 'Sergey Smirnov <sasmir@gmail.com>',
             X_MSI_LANGUAGE = 'en-us')
-
-#debugEnv.Alias('debug', map(lambda x: x['buildtarget'], msvsPacks[debugEnv['DEBUG']]))
-#releaseEnv.Alias('release', map(lambda x: x['buildtarget'], msvsPacks[releaseEnv['DEBUG']]))
 
