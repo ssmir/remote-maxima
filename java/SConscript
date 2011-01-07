@@ -1,7 +1,17 @@
 Import('env')
 
-objs = env.Java(target = 'classes', source = '#java/src')
-env.JavaH(target = '../src', source = objs)
+maximaSrc = Glob('src/ru/isa/dcs/ssmir/maxima/*.java')
+jythonSrc = ['src/ru/isa/dcs/ssmir/JythonService.java']
 
-env.MyInstall('/lib/', env.Jar(target = 'MaximaInstance.jar', source = objs))
+maximaObj = env.Java(target = 'classes', source = maximaSrc,
+    JAVACLASSPATH = '${VARDIR}/java/classes')
+env.JavaH(target = '../src', source = maximaObj)
+
+env.MyInstall('/lib/', env.Jar(target = 'MaximaInstance.jar', source = maximaObj))
+
+if env['EVEREST_HOME']:
+    jythonObj = env.Java(target = 'classes', source = jythonSrc,
+        JAVACLASSPATH = map(lambda x: "java/" + x, Glob('lib/*.jar', strings = True)) +
+        ['${EVEREST_HOME}/lib/everest.jar'])
+    env.MyInstall('/lib/', env.Jar(target = 'JythonService.jar', source = jythonObj))
 

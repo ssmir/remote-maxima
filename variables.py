@@ -24,7 +24,8 @@ PathVariable('SLICE_INCLUDES', 'ZeroC Ice built-in slices',
 BoolVariable('ICE_ENABLE', 'Enable/disable building of Ice dependent parts', 'no'),
 PathVariable('MAXIMA_APP', 'Path to the Maxima executable for examples and tests',
     WhereIs('maxima', os.environ['PATH']), PathVariable.PathIsFile),
-PackageVariable('CXXTEST_HOME', 'CxxTest distribution root', 'no')
+PackageVariable('CXXTEST_HOME', 'CxxTest distribution root', 'no'),
+PackageVariable('EVEREST_HOME', 'EveREST binary distribution root', 'no'),
 )
     return cmdVars
 
