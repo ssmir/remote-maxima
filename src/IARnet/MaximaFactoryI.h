@@ -18,9 +18,9 @@
 #ifndef __MAXIMAFACTORYI_H__
 #define __MAXIMAFACTORYI_H__
 
-#include "ServiceContext.h"
+#include <IARnet/ServiceContext.h>
 #include "Maxima.h"
-#include "Service.h"
+#include <IARnet/Service.h>
 #include "FileServerImpl.h"
 
 namespace IARnet

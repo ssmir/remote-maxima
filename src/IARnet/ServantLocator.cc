@@ -15,7 +15,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "ServantLocator.h"
+#include <IARnet/ServantLocator.h>
 
 #include <Ice/Connection.h>
 #include <Ice/ObjectAdapter.h>

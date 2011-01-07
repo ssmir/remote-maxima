@@ -15,7 +15,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "Node.h"
+#include <IARnet/Node.h>
 #include <Ice/Application.h>
 #include <IceUtil/Mutex.h>
 #include <signal.h>
