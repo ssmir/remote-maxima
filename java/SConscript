@@ -1,6 +1,6 @@
 Import('env')
 
-objs = env.Java(target = 'classes', source = '#java')
+objs = env.Java(target = 'classes', source = '#java/src')
 env.JavaH(target = '../src', source = objs)
 
 env.MyInstall('/lib/', env.Jar(target = 'MaximaInstance.jar', source = objs))
