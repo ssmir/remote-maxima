@@ -1,4 +1,4 @@
-﻿import os, subprocess
+﻿import os, subprocess, urllib
 from SCons.Script import *
 import ConfigureJNI
 
@@ -75,7 +75,16 @@ def FindJNIHeaders(context):
     context.Message('Finding jni.h path... ')
     result = ConfigureJNI.ConfigureJNI(context.env)
     context.Result(result)
-    return result    
+    return result
+    
+def downloadProgressHook(blocks, blockSize, fileSize):
+    sys.stdout.write("Downloaded %.2f MB of %d    \r" %
+        (blocks * blockSize / 1024. / 1024., fileSize))
+
+def fetchURL(target, url):
+    if not os.path.exists(target):
+        print 'Fetching %s into %s' % (url, target)
+        urllib.urlretrieve(url, target, downloadProgressHook)
 
 def Configure(env):
     conf = env.Configure(custom_tests = {'FindHeader' : FindHeader,
@@ -85,5 +94,8 @@ def Configure(env):
     if not conf.FindJNIHeaders():
         print 'jni.h is essential'
         Exit(1)
+    if env['EVEREST_HOME']:
+        fetchURL('java/lib/jython-2.5.2rc2.jar',
+            'http://binaries.remote-maxima.googlecode.com/hg/jython-2.5.2rc2.jar')
     return conf.Finish()
 
