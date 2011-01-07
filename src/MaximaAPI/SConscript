@@ -1,0 +1,4 @@
+Import('env')
+
+env.MyInstall('/include/MaximaAPI/', ['MaximaInstance.h'])
+

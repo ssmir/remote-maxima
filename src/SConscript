@@ -1,31 +1,10 @@
 ﻿Import('env')
 
-maximaInstance = env.SharedObject('MaximaInstance.cc')
-
 if env['ICE_ENABLE']:
-    NodeLibSource = File(['ServantLocator.cc', 'Security.cc', 'AccessDeniedServant.cc',
-        'Node.cc', 'InfoService.cc', 'Service.cc', 'ServiceContext.cc'])
-    MaximaServiceSource = File(['Maxima.cc', 'MaximaFactoryI.cc', 'MaximaResourceI.cc',
-        'FileServerImpl.cc', 'MasterFactoryI.cc', 'FileServer.cc'])
-    
-    nodeLib = env.SharedLibrary(target = "IARnet", source = [NodeLibSource],
-        CPPDEFINES = 'NODEDLL')
-    env.MyInstall('/lib/', nodeLib)
-    
-    env.MyInstall('/bin/', env.Program(target = "node", source = ['main.cc'],
-        LIBS = [nodeLib, env['LIBS']]))
-    
-    env.MyInstall('/lib/', env.SharedLibrary(target = 'MaximaService',
-        source = [maximaInstance, MaximaServiceSource], LIBS = [nodeLib,
-        env['LIBS'], 'boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt']))
+    env.SConscript('IARnet/SConscript', exports = 'env')
 
-    env.MyInstall('/include/IARnet/', ['AccessDeniedServant.h', 'Node.h', 'portdefs.h',
-        'ServantLocator.h', 'Service.h', 'ServiceContext.h', 'SOExportDefs.h'])
+if env['EVEREST_HOME']:
+    env.SConscript('everest/SConscript', exports = 'env')
 
-env.MyInstall('/lib/', env.SharedLibrary(target = 'MaximaInstance',
-    source = [maximaInstance, 'ru_isa_dcs_ssmir_maxima_MaximaInstance.cc'],
-    LIBS = ['boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt'],
-    SHLIBSUFFIX = env['JNI_SUFFIX']))
-
-env.MyInstall('/include/MaximaAPI/', ['MaximaInstance.h'])
+env.SConscript(dirs = ['MaximaAPI', 'jni'], exports = 'env')
 

@@ -15,11 +15,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "Node.h"
-#include "Security.h"
-#include "ServantLocator.h"
-#include "InfoService.h"
-#include "Service.h"
+#include <IARnet/Node.h>
+#include <IARnet/Security.h>
+#include <IARnet/ServantLocator.h>
+#include <IARnet/InfoService.h>
+#include <IARnet/Service.h>
 #include <Ice/DynamicLibrary.h>
 #include <Ice/ObjectAdapter.h>
 

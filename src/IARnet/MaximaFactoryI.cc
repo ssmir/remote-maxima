@@ -16,7 +16,7 @@
 */
 
 #include "MaximaFactoryI.h"
-#include "MaximaInstance.h"
+#include <MaximaAPI/MaximaInstance.h>
 #include "MaximaResourceI.h"
 
 #include <ios>

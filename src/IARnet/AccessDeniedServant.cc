@@ -15,8 +15,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "AccessDeniedServant.h"
-#include "Security.h"
+#include <IARnet/AccessDeniedServant.h>
+#include <IARnet/Security.h>
 
 #include <Ice/ObjectAdapter.h>
 #include <Ice/Initialize.h>

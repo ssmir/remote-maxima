@@ -18,7 +18,7 @@
 #ifndef __MAXIMARESOURCEI_H__
 #define __MAXIMARESOURCEI_H__
 
-#include "ServiceContext.h"
+#include <IARnet/ServiceContext.h>
 #include "Maxima.h"
 #include "FileServerImpl.h"
 #include <IceUtil/Mutex.h>

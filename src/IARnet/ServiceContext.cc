@@ -15,8 +15,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "ServiceContext.h"
-#include "ServantLocator.h"
+#include <IARnet/ServiceContext.h>
+#include <IARnet/ServantLocator.h>
 
 using namespace IARnet::Node;
 

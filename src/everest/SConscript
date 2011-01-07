@@ -1,0 +1,7 @@
+Import('env')
+
+jythonObj = env.Java(target = 'classes', source = '#src/everest/java',
+    JAVACLASSPATH = map(lambda x: "src/everest/" + x, Glob('lib/*.jar', strings = True)) +
+    ['${EVEREST_HOME}/lib/everest.jar'])
+env.MyInstall('/lib/', env.Jar(target = 'JythonService.jar', source = jythonObj))
+
