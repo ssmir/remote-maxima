@@ -1,0 +1,19 @@
+Import('env')
+
+maximaInstance = env.Object(target = 'MaximaInstance', source = '../../MaximaAPI/MaximaInstance.cc')
+
+targets = []
+
+targets.append(env.Program(target = 'miclient', source = ['miclient.cc', maximaInstance],
+    LIBS = [env['LIBS'], 'boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt']))
+targets.append(env.Program(target = 'client', source = ['client.cc', '../Maxima.cc',
+    '../FileServer.cc', '../FileServerImpl.cc'],
+    LIBS = [env['LIBS'], 'boost_filesystem-mt', 'boost_system-mt'],
+    CPPPATH = [env['CPPPATH'], '..']))
+
+targets.append(env.Textfile(target = 'maxima_path.conf', source = [
+        'MaximaMasterFactory.MaximaPath = %s' % env['MAXIMA_APP'],
+        'MaximaFactory.MaximaPath = %s' % env['MAXIMA_APP']]))
+
+env.MyInstall('/share/remote-maxima/examples/', [Glob('*.sh'), Glob('*.conf'), targets])
+
