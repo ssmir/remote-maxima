@@ -3,11 +3,13 @@
 if env['ICE_ENABLE']:
     env.SConscript('IARnet/SConscript', exports = 'env')
 
-if env['EVEREST_HOME']:
-    env.SConscript('everest/SConscript', exports = 'env')
-
 if env['CXXTEST_HOME']:
     env.SConscript('tests/SConscript', exports = 'env')
 
-env.SConscript(dirs = ['MaximaAPI', 'jni'], exports = 'env')
+env.SConscript(dirs = ['MaximaAPI'], exports = 'env')
+
+jnis = env.SConscript('jni/SConscript', exports = 'env')
+
+if env['EVEREST_HOME']:
+    env.SConscript('everest/SConscript', exports = ['env', 'jnis'])
 

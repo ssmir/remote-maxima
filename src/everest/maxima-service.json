@@ -1,0 +1,25 @@
+{
+  "name" : "maxima",
+  "description" : "CAS Maxima REST-service accepting one Maxima expresion at a time",
+  "inputs" : {
+    "command" : {"type" : "string", "title" : "Input expression"},
+    "script.mac" : {"type" : "file", "optional" : true,
+      "title" : "Script to load before executing the command"},
+    "data.lsp" : {"type" : "file", "optional" : true,
+      "title" : "Lisp script to load after the script file but before the command"}
+  },
+  "outputs" : {
+    "result" : {"type" : "string", "title" : "Result returned by the command"},
+    "output.lsp" : {"type" : "file",
+      "title" : "Output file (output.lsp) which was used by the command"}
+  },
+  "implementation" : {
+    "type" : "java",
+    "class" : "ru.isa.dcs.ssmir.JythonService",
+    "config" : {
+      "pythonPackage" : "MaximaService",
+      "pythonClass" : "MaximaService",
+      "maximaPath" : "/opt/local/bin/maxima"
+    }
+  }
+}
