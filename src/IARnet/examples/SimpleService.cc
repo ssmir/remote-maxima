@@ -15,8 +15,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <ServiceContext.h>
-#include <Service.h>
+#include <IARnet/ServiceContext.h>
+#include <IARnet/Service.h>
 
 class SimpleService : public Ice::Object, public IARnet::Node::Service
 {
