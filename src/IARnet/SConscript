@@ -11,7 +11,7 @@ MaximaServiceSource = File(['Maxima.cc', 'MaximaFactoryI.cc', 'MaximaResourceI.c
     'FileServerImpl.cc', 'MasterFactoryI.cc', 'FileServer.cc'])
 
 maximaInstance = env.SharedObject(target = 'MaximaInstance',
-    source = '../MaximaAPI/MaximaInstance.cc')
+    source = '#src/MaximaAPI/MaximaInstance.cc')
 
 nodeLib = env.SharedLibrary(target = "IARnet", source = [NodeLibSource],
     CPPDEFINES = 'NODEDLL')

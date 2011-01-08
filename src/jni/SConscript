@@ -5,8 +5,11 @@ env.JavaH(target = '.', source = objs)
 
 env.MyInstall('/lib/', env.Jar(target = 'MaximaInstance.jar', source = objs))
 
+maximaInstance = env.SharedObject(target = 'MaximaInstance',
+    source = '#src/MaximaAPI/MaximaInstance.cc')
+
 env.MyInstall('/lib/', env.SharedLibrary(target = 'MaximaInstance',
-    source = ['../MaximaAPI/MaximaInstance.cc', 'ru_isa_dcs_ssmir_maxima_MaximaInstance.cc'],
+    source = [maximaInstance, 'ru_isa_dcs_ssmir_maxima_MaximaInstance.cc'],
     LIBS = ['boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt'],
     SHLIBSUFFIX = env['JNI_SUFFIX']))
 

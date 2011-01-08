@@ -6,5 +6,8 @@ if env['ICE_ENABLE']:
 if env['EVEREST_HOME']:
     env.SConscript('everest/SConscript', exports = 'env')
 
+if env['CXXTEST_HOME']:
+    env.SConscript('tests/SConscript', exports = 'env')
+
 env.SConscript(dirs = ['MaximaAPI', 'jni'], exports = 'env')
 

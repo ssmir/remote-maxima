@@ -1,6 +1,7 @@
 Import('env')
 
-maximaInstance = env.Object(target = 'MaximaInstance', source = '../../MaximaAPI/MaximaInstance.cc')
+maximaInstance = env.Object(target = 'MaximaInstance',
+    source = '#src/MaximaAPI/MaximaInstance.cc')
 
 targets = []
 
@@ -16,4 +17,7 @@ targets.append(env.Textfile(target = 'maxima_path.conf', source = [
         'MaximaFactory.MaximaPath = %s' % env['MAXIMA_APP']]))
 
 env.MyInstall('/share/remote-maxima/examples/', [Glob('*.sh'), Glob('*.conf'), targets])
+
+env.SharedLibrary(target = 'SimpleService', source = ['SimpleService.cc'],
+    LIBS = ['IARnet', env['LIBS']], LIBPATH = [env['LIBPATH'], '..'])
 

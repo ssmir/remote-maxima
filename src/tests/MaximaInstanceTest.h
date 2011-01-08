@@ -16,7 +16,7 @@
 */
 
 #include "cxxtest/TestSuite.h"
-#include <MaximaInstance.h>
+#include <MaximaAPI/MaximaInstance.h>
 #include <string.h>
 
 using namespace MaximaAPI;

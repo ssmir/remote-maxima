@@ -1,0 +1,15 @@
+import os
+
+Import('env')
+
+testEnv = env.Clone(ENV = {'PATH' : os.environ['PATH']})
+
+maximaInstance = testEnv.Object(target = "MaximaInstanceAPI",
+    source = '#src/MaximaAPI/MaximaInstance.cc')
+
+testEnv.CxxTest('alltests', ['MaximaInstanceTest.h', maximaInstance],
+    CXXFLAGS='-Wall -W -Wextra',
+    CPPPATH = '#', LIBS = ['boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt'],
+    CPPDEFINES = [('MAXIMA_APP_PATH', '\\"${MAXIMA_APP}\\"'),
+        ('MAXIMA_TEST_DIR', '\\"src/tests\\"')])
+
