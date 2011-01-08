@@ -18,7 +18,7 @@ Help(cmdVars.GenerateHelpText(baseEnv))
 
 baseEnv.Append(
     CPPPATH = ['.', '#${VARDIR}/src', '#src', '$BOOST_INCLUDES', '$BOOST_PROCESS_INCLUDES'],
-    LIBPATH = ['#lib', '$BOOST_LIB_PATH'],
+    LIBPATH = ['$BOOST_LIB_PATH'],
     LIBS = [], # to make clean working (undefined if configure is skipped)
     VARDIR = "build-${MY_PLATFORM}-${DEBUG and 'debug' or 'release'}",
     MY_PLATFORM = platform.system() + "-" + configure.runCommand('uname -m'),

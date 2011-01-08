@@ -2,3 +2,8 @@ Import('env')
 
 env.MyInstall('/include/MaximaAPI/', ['MaximaInstance.h'])
 
+mclient = env.Program(target = 'mclient', source = ['mclient.cc', 'MaximaInstance.cc'],
+    LIBS = ['boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt'])
+
+env.MyInstall('/share/remote-maxima/examples/', ['maximag-disp.lisp', mclient])
+
