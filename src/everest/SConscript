@@ -1,7 +1,37 @@
+import json, os, sys
+
 Import('env')
+Import('jnis')
 
 jythonObj = env.Java(target = 'classes', source = '#src/everest/java',
     JAVACLASSPATH = map(lambda x: "src/everest/" + x, Glob('lib/*.jar', strings = True)) +
     ['${EVEREST_HOME}/lib/everest.jar'])
-env.MyInstall('/lib/', env.Jar(target = 'JythonService.jar', source = jythonObj))
+jythonService = env.Jar(target = 'JythonService.jar', source = jythonObj)
+
+env.MyInstall('${EVEREST_HOME}/lib/external', [jythonService, jnis])
+env.MyInstall('${EVEREST_HOME}/lib/external/MaximaService', Glob('MaximaService/*.*'))
+
+def updateEverestConfig(env):
+    with open(env.subst('${EVEREST_HOME}/everest.conf'), 'rb') as f:
+        data = json.load(f)
+    for x in data['services']:
+        if x['name'] == 'maxima':
+            return
+    with open(str(File('maxima-service.json').srcnode()), 'rb') as f:
+        maximaJson = json.load(f)
+    maximaJson['implementation']['config']['maximaPath'] = env['MAXIMA_APP']
+    data['services'].append(maximaJson)
+    with open(env.subst('${EVEREST_HOME}/everest.conf'), 'wb') as f:
+        json.dump(data, f, indent = 1)
+        
+def addMaximaConfig(target, source, env):
+    try:
+        updateEverestConfig(env)
+        print "Everest config updated successfully"
+        return
+    except:
+        print "Failed to update Everest config:", sys.exc_info()
+        print "Please update Everest config manually adding service description from", str(File('maxima-service.json').srcnode())
+
+env.Alias('install-everest-service', ['${EVEREST_HOME}'], addMaximaConfig)
 

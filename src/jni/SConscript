@@ -3,13 +3,17 @@ Import('env')
 objs = env.Java(target = 'classes', source = '#src/jni/java')
 env.JavaH(target = '.', source = objs)
 
-env.MyInstall('/lib/', env.Jar(target = 'MaximaInstance.jar', source = objs))
+jniJar = env.Jar(target = 'MaximaInstance.jar', source = objs)
 
 maximaInstance = env.SharedObject(target = 'MaximaInstance',
     source = '#src/MaximaAPI/MaximaInstance.cc')
 
-env.MyInstall('/lib/', env.SharedLibrary(target = 'MaximaInstance',
+jniLib = env.SharedLibrary(target = 'MaximaInstance',
     source = [maximaInstance, 'ru_isa_dcs_ssmir_maxima_MaximaInstance.cc'],
     LIBS = ['boost_regex-mt', 'boost_filesystem-mt', 'boost_system-mt'],
-    SHLIBSUFFIX = env['JNI_SUFFIX']))
+    SHLIBSUFFIX = env['JNI_SUFFIX'])
+
+env.MyInstall('/usr/share/remote-maxima/jni/', [jniJar, jniLib])
+
+Return('jniJar', 'jniLib')
 
