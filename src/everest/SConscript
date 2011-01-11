@@ -31,7 +31,7 @@ def addMaximaConfig(target, source, env):
         return
     except:
         print "Failed to update Everest config:", sys.exc_info()
-        print "Please update Everest config manually adding service description from", str(File('maxima-service.json').srcnode())
+        print "Please update Everest config manually adding service description from", str(File('maxima-service.json').srcnode()), "and updating maximaPath inside"
 
 if 'DO_PACKAGE' in env:
     env.AlwaysBuild(env.Alias('install-everest-service', ['${EVEREST_HOME}'], addMaximaConfig))
