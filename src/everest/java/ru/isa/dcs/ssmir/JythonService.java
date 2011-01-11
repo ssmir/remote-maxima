@@ -47,7 +47,9 @@ public class JythonService implements JavaServiceI {
 			config.get("pythonPackage") : pythonClass;
 		
 		_interpreter = new PythonInterpreter();
-		_interpreter.exec("import sys; sys.path.append('" + new File("lib").getAbsolutePath() + "')");
+		_interpreter.exec("import sys;");
+		_interpreter.exec("sys.path.append('" + new File("lib").getAbsolutePath() + "')");
+		_interpreter.exec("sys.path.append('" + new File("lib", "external").getAbsolutePath() + "')");
         _interpreter.exec("from " + pythonPackage + " import " + pythonClass);
         PyObject serviceClass = _interpreter.get(pythonClass);
         PyObject implObj = serviceClass.__call__();

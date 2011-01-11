@@ -11,7 +11,7 @@ cd extern
 7za -y x everest.zip
 cd ..
 
-JYTHON=jython-2.5.2rc2.jar
+JYTHON=jython-2.5.2rc3.jar
 JYTHON_LIB=src/everest/lib/$JYTHON
 
 if [[ ! -e $JYTHON_LIB ]]; then
