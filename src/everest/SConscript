@@ -8,7 +8,7 @@ jythonObj = env.Java(target = 'classes', source = '#src/everest/java',
     ['${EVEREST_HOME}/lib/everest.jar'])
 jythonService = env.Jar(target = 'JythonService.jar', source = jythonObj)
 
-env.MyInstall('${EVEREST_HOME}/lib/external', [jythonService, jnis])
+env.MyInstall('${EVEREST_HOME}/lib/external', [jythonService, jnis, Glob('lib/*.jar')])
 env.MyInstall('${EVEREST_HOME}/lib/external/MaximaService', Glob('MaximaService/*.*'))
 
 def updateEverestConfig(env):
@@ -33,5 +33,6 @@ def addMaximaConfig(target, source, env):
         print "Failed to update Everest config:", sys.exc_info()
         print "Please update Everest config manually adding service description from", str(File('maxima-service.json').srcnode())
 
-env.Alias('install-everest-service', ['${EVEREST_HOME}'], addMaximaConfig)
+if 'DO_PACKAGE' in env:
+    env.AlwaysBuild(env.Alias('install-everest-service', ['${EVEREST_HOME}'], addMaximaConfig))
 

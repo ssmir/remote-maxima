@@ -32,6 +32,8 @@ from contextlib import closing
 from java.lang import Thread
 from java.lang import InterruptedException
 from java.lang import Runtime
+from java.lang import UnsatisfiedLinkError
+from java.lang import System
 
 from ru.isa.dcs.ssmir.maxima import MaximaInstance
 from everest.java import JavaServiceI
@@ -39,7 +41,10 @@ from everest.java import JavaServiceI
 from MaximaService import packagePath
 from threadpool import *
 
-System.load(os.path.abspath("lib/" + System.mapLibraryName("MaximaInstance")))
+try:
+    System.load(os.path.abspath("lib/" + System.mapLibraryName("MaximaInstance")))
+except UnsatisfiedLinkError:
+    System.load(os.path.abspath("lib/external/" + System.mapLibraryName("MaximaInstance")))
 
 class MaximaInstance2(MaximaInstance):
     def __init__(self):
@@ -88,7 +93,7 @@ class MaximaService(JavaServiceI):
             maxima.queue.put(sys.exc_info())
         return None;
 
-    def run(self, params, jobDir, status):
+    def run(self, params, outputs, jobId, jobDir, status):
         try:
             self._threadPool.poll()
         except NoResultsPending:
@@ -117,7 +122,8 @@ class MaximaService(JavaServiceI):
                     
             if isinstance(result, tuple):
                 raise result[0], result[1], result[2]
-            return {"result" : result, "output.lsp" : "output.lsp"}
+            outputs["result"] = result
+            outputs["output.lsp"] = "output.lsp"
         except KeyboardInterrupt:
             maxima.interruptMaxima()
             maxima.queue.get()

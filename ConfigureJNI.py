@@ -64,6 +64,7 @@ def ConfigureJNI(env):
             java_headers.append(os.path.join(java_headers[0], 'linux'))
             java_headers.append(os.path.join(java_headers[0], 'solaris'))
         elif sys.platform != 'win32':
+            sys.stdout.write("Searching for jni.h in java base... ")
             jni_h = configure.runCommand('find ' + java_base + ' -name jni.h')
             java_headers.append(os.path.dirname(jni_h))
         else:
