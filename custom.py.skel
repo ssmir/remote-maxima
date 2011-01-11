@@ -1,0 +1,23 @@
+from os.path import *
+
+BOOST_PROCESS_INCLUDES = abspath("extern/boost-process")
+CXXTEST_HOME = abspath("extern/cxxtest")
+EVEREST_HOME = abspath("extern/everest")
+
+# Boost paths
+#BOOST_INCLUDES = "/usr/include"
+#BOOST_LIB_PATH = "/usr/lib"
+
+# Build Ice part
+#ICE_ENABLE = "y"
+
+# Ice paths
+#ICE_INCLUDES = "/usr/include"
+#ICE_LIB_PATH = "/usr/lib"
+#SLICE_INCLUDES = "/usr/share/Ice-3.3.1/slice"
+#SLICE2CPP = "/usr/bin/slice2cpp"
+
+
+# Use scons -h to query for other possible variables
+# and to see default/active values
+
