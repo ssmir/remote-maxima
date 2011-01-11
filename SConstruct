@@ -17,7 +17,7 @@ builders.addMyInstallBuilder(baseEnv)
 Help(cmdVars.GenerateHelpText(baseEnv))
 
 baseEnv.Append(
-    CPPPATH = ['.', '#${VARDIR}/src', '#src', '$BOOST_INCLUDES', '$BOOST_PROCESS_INCLUDES'],
+    CPPPATH = ['.', '#${VARDIR}', '#src', '$BOOST_INCLUDES', '$BOOST_PROCESS_INCLUDES'],
     LIBPATH = ['$BOOST_LIB_PATH'],
     LIBS = [], # to make clean working (undefined if configure is skipped)
     VARDIR = "build-${MY_PLATFORM}-${DEBUG and 'debug' or 'release'}",
@@ -40,8 +40,8 @@ releaseEnv.Append(CCFLAGS = ['-O3'])
 debugEnv['DO_PACKAGE'] = True
 
 for env in [debugEnv, releaseEnv]:
-    env.VariantDir('${VARDIR}', '.')
-    env.SConscript(dirs = ['${VARDIR}/src'], exports = 'env')
+    env.VariantDir('${VARDIR}', 'src')
+    env.SConscript(dirs = ['${VARDIR}'], exports = 'env')
     if 'DO_PACKAGE' in env:
         env.Package(
             NAME = 'remote-maxima-${MY_PLATFORM}',
