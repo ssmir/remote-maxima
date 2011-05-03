@@ -67,6 +67,7 @@ def ConfigureJNI(env):
             sys.stdout.write("Searching for jni.h in java base... ")
             jni_h = configure.runCommand('find ' + java_base + ' -name jni.h')
             java_headers.append(os.path.dirname(jni_h))
+            java_headers.append(os.path.join(os.path.dirname(jni_h), 'linux'))
         else:
             # add all subdirs of 'include'. The system specific headers
             # should be in there somewhere
