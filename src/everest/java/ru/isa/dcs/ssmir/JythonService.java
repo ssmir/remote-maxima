@@ -33,8 +33,8 @@ import org.python.util.PythonInterpreter;
 import java.util.Map;
 import java.io.File;
 
-import everest.java.JavaServiceI;
-import everest.JobStatus;
+import websolve.everest.adapter.java.JavaServiceI;
+import websolve.everest.JobStatus;
 
 public class JythonService implements JavaServiceI {
 	@Override
