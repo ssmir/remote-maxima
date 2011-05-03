@@ -36,7 +36,7 @@ from java.lang import UnsatisfiedLinkError
 from java.lang import System
 
 from ru.isa.dcs.ssmir.maxima import MaximaInstance
-from everest.java import JavaServiceI
+from websolve.everest.adapter.java import JavaServiceI
 
 from MaximaService import packagePath
 from threadpool import *
