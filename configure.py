@@ -95,6 +95,10 @@ def Configure(env):
         print 'jni.h is essential'
         Exit(1)
     if env['EVEREST_HOME']:
+        try:
+            os.mkdir('src/everest/lib')
+        except:
+            pass
         fetchURL('src/everest/lib/jython-2.5.2rc3.jar',
             'http://binaries.remote-maxima.googlecode.com/hg/jython-2.5.2rc3.jar')
     return conf.Finish()
