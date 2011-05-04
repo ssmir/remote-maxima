@@ -34,6 +34,7 @@ from java.lang import InterruptedException
 from java.lang import Runtime
 from java.lang import UnsatisfiedLinkError
 from java.lang import System
+from java.io import File
 
 from ru.isa.dcs.ssmir.maxima import MaximaInstance
 from websolve.everest.adapter.java import JavaServiceI
@@ -123,7 +124,7 @@ class MaximaService(JavaServiceI):
             if isinstance(result, tuple):
                 raise result[0], result[1], result[2]
             outputs["result"] = result
-            outputs["output.lsp"] = "output.lsp"
+            outputs["output.lsp"] = File("output.lsp")
         except KeyboardInterrupt:
             maxima.interruptMaxima()
             maxima.queue.get()
